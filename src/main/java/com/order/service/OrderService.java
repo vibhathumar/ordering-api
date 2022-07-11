@@ -7,6 +7,9 @@ import com.order.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class OrderService {
 
@@ -24,5 +27,17 @@ public class OrderService {
         OrderEntity orderEntity=orderMapper.toEntity(order);
         return orderRepository.save(orderEntity);
 
+    }
+
+    public List<OrderEntity> getAllOrder() {
+        return orderRepository.findAll();
+    }
+
+    public Optional<OrderEntity> getOrderById(String id) {
+        return orderRepository.findById(id);
+    }
+
+    public void deleteOrderById(String id) {
+         orderRepository.deleteById(id);
     }
 }
