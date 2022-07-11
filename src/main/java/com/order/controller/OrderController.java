@@ -8,6 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
+
 @RestController
 @Slf4j
 @RequestMapping("api/v1/order")
@@ -22,9 +25,21 @@ public class OrderController {
     }
 
     @PostMapping("/postOrder")
-    public OrderEntity Order(@RequestBody Order order){
+    public OrderEntity saveOrder(@RequestBody Order order){
 
         log.info("Hello"+order);
         return orderService.saveOrder(order);
+    }
+    @GetMapping("/getAllOrder")
+    public List<OrderEntity> getAllOrder(){
+        return orderService.getAllOrder();
+    }
+    @GetMapping("/getOrderById/{id}")
+    public Optional<OrderEntity> getOrderById(@PathVariable("id") String id){
+        return orderService.getOrderById(id);
+    }
+    @DeleteMapping("/deleteOrderById/{id}")
+    public void deleteOrderById(@PathVariable("id") String id){
+         orderService.deleteOrderById(id);
     }
 }
