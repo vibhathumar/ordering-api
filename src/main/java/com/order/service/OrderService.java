@@ -1,5 +1,6 @@
 package com.order.service;
 
+import com.order.client.CustomerRestClient;
 import com.order.dto.Order;
 import com.order.entity.OrderEntity;
 import com.order.mapper.OrderMapper;
@@ -16,15 +17,20 @@ public class OrderService {
 
     private final OrderMapper orderMapper;
     private final OrderRepository orderRepository;
+    private final CustomerRestClient customerRestClient;
     @Autowired
-    public OrderService(OrderMapper orderMapper, OrderRepository orderRepository) {
+    public OrderService(OrderMapper orderMapper, OrderRepository orderRepository, CustomerRestClient customerRestClient) {
         this.orderMapper = orderMapper;
         this.orderRepository = orderRepository;
+        this.customerRestClient = customerRestClient;
     }
 
 
     public OrderEntity saveOrder(Order order){
+        String customerId = customerRestClient.createCustomerDetail(order.getCustomer());
+
         OrderEntity orderEntity=orderMapper.toEntity(order);
+        orderEntity.setCustomerId(customerId);
         return orderRepository.save(orderEntity);
 
     }
